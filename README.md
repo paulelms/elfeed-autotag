@@ -1,9 +1,11 @@
 # elfeed-autotag
 
+[![MELPA](http://melpa.org/packages/elfeed-autotag-badge.svg)](http://melpa.org/#/elfeed-autotag) [![MELPA Stable](https://stable.melpa.org/packages/elfeed-autotag-badge.svg)](https://stable.melpa.org/#/elfeed-autotag)
+
 Easy auto-tagging for elfeed-protocol (and elfeed in general).  
 Thanks to [elfeed-org](https://github.com/remyhonig/elfeed-org "elfeed-org") by Remy Honig for starting point.
 
-I just wanted to overlay elfeed-org config on elfeed-protocol, but with some changes in how the rules work.
+Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol feeds.
 
 ## Supported rules
 
