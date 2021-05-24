@@ -8,6 +8,7 @@ I just wanted to overlay elfeed-org config on elfeed-protocol, but with some cha
 ## Supported rules
 
 - those thar are in elfeed-org
+  - feed renaming
   - headline tags (converted to tags, but do not generate subscriptions for elfeed)
   - `entry-title: \(emacs\|org-mode\)`
 - tag rules for feed url like `feed-url: reddit.com :reddit:`
