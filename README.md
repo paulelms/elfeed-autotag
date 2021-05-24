@@ -15,7 +15,29 @@ Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol fee
   - `entry-title: \(emacs\|org-mode\)`
 - tag rules for feed url like `feed-url: reddit.com :reddit:`
 
-## Documentation WIP
+## Documentation
+
+### init
+
+``` emacs-lisp
+(require 'elfeed-autotag)
+(setq pvv-elfeed-autotag-files '("~/org/elfeed.org")
+      pvv-elfeed-autotag-protocol-used t)
+(elfeed-autotag)
+```
+
+### Example feed rules
+
+``` org
+* feeds :elfeed:
+** Reddit :reddit:
+*** feed-url: reddit.com
+*** [[https://www.reddit.com/r/listentothis/.rss][Listen To This]] :music:
+feed renaming
+** Emacs :emacs:
+*** entry-title: \(emacs\|org-mode\)
+*** https://planet.emacslife.com/atom.xml :mustread:
+```
 
 ### TODO
 
@@ -30,10 +52,3 @@ Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol fee
   - tag rules for feed title
   - after/before tag rules
   - tag remove
-
-### init
-
-``` emacs-lisp
-(require 'elfeed-autotag)
-(elfeed-autotag)
-```
