@@ -1,4 +1,4 @@
-;;; elfeed-autotag.el --- easy auto-tagging for elfeed -*- lexical-binding: t; -*-
+;;; elfeed-autotag.el --- Easy auto-tagging for elfeed -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021 Paul Elms
 ;; Derived from elfeed-org by Remy Honig
@@ -8,9 +8,22 @@
 ;; Version: 0.1
 ;; Keywords: news
 ;; Homepage: https://github.com/paulelms/elfeed-autotag
-;; Package-Requires: ((emacs "28.0.50") (elfeed "3.4.1") (org "8.2.7") (dash "2.10.0") (s "1.9.0") (cl-lib "0.5"))
+;; Package-Requires: ((emacs "27.1") (elfeed "3.4.1") (org "8.2.7") (dash "2.10.0") (s "1.9.0"))
 ;;
 ;; This file is not part of GNU Emacs.
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
 ;;  Easy auto-tagging for elfeed-protocol (and elfeed in general).
@@ -25,7 +38,7 @@
 (require 'cl-lib)
 
 (defgroup elfeed-autotag nil
-  "Configure the Elfeed RSS reader with an Orgmode file"
+  "Configure the Elfeed RSS reader with an Orgmode file."
   :group 'comm)
 
 (defcustom pvv-elfeed-autotag-tree-id "elfeed"
@@ -49,7 +62,7 @@
   :type 'boolean)
 
 (defvar elfeed-autotag-new-entry-hook nil
-  "List of new-entry tagger hooks created by elfeed-autotag.")
+  "List of new-entry tagger hooks created by `elfeed-autotag'.")
 
 (defun pvv-elfeed-autotag-check-configuration-file (file)
   "Make sure FILE exists."
@@ -241,7 +254,7 @@ all.  Which in my opinion makes the process more traceable."
            (length elfeed-autotag-new-entry-hook)))
 
 (defun elfeed-autotag-run-new-entry-hook (entry)
-  "Run ENTRY through elfeed-autotag taggers."
+  "Run ENTRY through `elfeed-autotag' taggers."
   (--each elfeed-autotag-new-entry-hook
     (funcall it entry)))
 

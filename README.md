@@ -20,6 +20,7 @@ Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol fee
 ### TODO
 
 - learn how to test emacs-lisp code (ert, xtest)
+- automate elfeed-protocol detection
 - feed url escaping for `elfeed-make-tagger`
 - explore possibility to sync tags via elfeed-protocol
 - it might be better set autotags property for elfeed-protocol instead of modifying entries
