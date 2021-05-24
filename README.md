@@ -18,6 +18,7 @@ I just wanted to overlay elfeed-org config on elfeed-protocol, but with some cha
 ### TODO
 
 - learn how to test emacs-lisp code (ert, xtest)
+- feed url escaping for `elfeed-make-tagger`
 - explore possibility to sync tags via elfeed-protocol
 - it might be better set autotags property for elfeed-protocol instead of modifying entries
 - (maybe) support for more than one elfeed-protocol source and more complex configurations
