@@ -9,7 +9,7 @@ Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol fee
 
 ## Supported rules
 
-- those thar are in elfeed-org
+- those that are in elfeed-org
   - feed renaming
   - headline tags (converted to tags, but do not generate subscriptions for elfeed)
   - `entry-title: \(emacs\|org-mode\)`
