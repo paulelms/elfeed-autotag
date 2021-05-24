@@ -19,6 +19,8 @@ I just wanted to overlay elfeed-org config on elfeed-protocol, but with some cha
 
 - learn how to test emacs-lisp code (ert, xtest)
 - explore possibility to sync tags via elfeed-protocol
+- it might be better set autotags property for elfeed-protocol instead of modifying entries
+- (maybe) support for more than one elfeed-protocol source and more complex configurations
 - considering (according to `elfeed-make-tagger` function):
   - tag rules for entry link like `entry-link: <url> :tag:`
   - tag rules for feed title
