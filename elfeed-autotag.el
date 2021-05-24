@@ -5,7 +5,7 @@
 ;;
 ;; Author: Paul Elms <https://paul.elms.pro>
 ;; Maintainer: Paul Elms <paul@elms.pro>
-;; Version: 0.0.1
+;; Version: 0.1
 ;; Keywords: news
 ;; Homepage: https://github.com/paulelms/elfeed-autotag
 ;; Package-Requires: ((emacs "28.0.50") (elfeed "3.4.1") (org "8.2.7") (dash "2.10.0") (s "1.9.0") (cl-lib "0.5"))
