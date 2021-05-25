@@ -42,6 +42,7 @@ feed renaming
 ### TODO
 
 - learn how to test emacs-lisp code (ert, xtest)
+- better deal with elfeed-protocol dependency
 - automate elfeed-protocol detection
 - feed url escaping for `elfeed-make-tagger`
 - explore possibility to sync tags via elfeed-protocol
