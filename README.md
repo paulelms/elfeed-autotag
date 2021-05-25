@@ -39,6 +39,14 @@ feed renaming
 *** https://planet.emacslife.com/atom.xml :mustread:
 ```
 
+### How to update old entries when configuration changed
+
+By default autotag only runs on new entries. You can add new tags to old posts with `M-x elfeed-apply-hooks-now`, but this will not remove the redundant tags (you can do it by hands). I will think about more complete synchronization of the configuration with the actual elfeed database.
+
+``` emacs-lisp
+(elfeed-apply-hooks-now)
+```
+
 ### TODO
 
 - learn how to test emacs-lisp code (ert, xtest)
@@ -46,7 +54,7 @@ feed renaming
 - automate elfeed-protocol detection
 - feed url escaping for `elfeed-make-tagger`
 - explore possibility to sync tags via elfeed-protocol
-- it might be better set autotags property for elfeed-protocol instead of modifying entries
+- ~~it might be better set autotags property for elfeed-protocol instead of modifying entries~~
 - (maybe) support for more than one elfeed-protocol source and more complex configurations
 - considering (according to `elfeed-make-tagger` function):
   - tag rules for entry link like `entry-link: <url> :tag:`
