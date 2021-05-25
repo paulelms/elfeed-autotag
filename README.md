@@ -5,7 +5,7 @@
 Easy auto-tagging for elfeed-protocol (and elfeed in general).  
 Thanks to [elfeed-org](https://github.com/remyhonig/elfeed-org "elfeed-org") by Remy Honig for starting point.
 
-Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol feeds.
+Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol feeds. The difference from elfeed-org is that autotag does not set up its own feed tree, it only applies the rules. In addition, since all feeds are not fully described in the org file, url matching was added.
 
 ## Supported rules
 
@@ -42,7 +42,7 @@ feed renaming
 ### TODO
 
 - learn how to test emacs-lisp code (ert, xtest)
-- better deal with elfeed-protocol dependency
+- (maybe) better deal with elfeed-protocol dependency
 - automate elfeed-protocol detection
 - feed url escaping for `elfeed-make-tagger`
 - explore possibility to sync tags via elfeed-protocol
