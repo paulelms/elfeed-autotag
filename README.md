@@ -21,8 +21,7 @@ Elfeed-autotag overlays configuration in elfeed-org style on elfeed-protocol fee
 
 ``` emacs-lisp
 (require 'elfeed-autotag)
-(setq pvv-elfeed-autotag-files '("~/org/elfeed.org")
-      pvv-elfeed-autotag-protocol-used t)
+(setq elfeed-autotag-files '("~/org/elfeed.org"))
 (elfeed-autotag)
 ```
 

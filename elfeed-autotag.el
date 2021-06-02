@@ -43,46 +43,39 @@
   "Configure the Elfeed RSS reader with an Orgmode file."
   :group 'comm)
 
-(defcustom pvv-elfeed-autotag-tree-id "elfeed"
+(defcustom elfeed-autotag-tree-id "elfeed"
   "The tag or ID property on the trees containing the RSS feeds."
   :group 'elfeed-autotag
   :type 'string)
 
-(defcustom pvv-elfeed-autotag-ignore-tag "ignore"
+(defcustom elfeed-autotag-ignore-tag "ignore"
   "The tag on the feed trees that will be ignored."
   :group 'elfeed-autotag
   :type 'string)
 
-(defcustom pvv-elfeed-autotag-files (list (locate-user-emacs-file "elfeed.org"))
-  "The files where we look to find trees with the `pvv-elfeed-autotag-tree-id'."
+(defcustom elfeed-autotag-files (list (locate-user-emacs-file "elfeed.org"))
+  "The files where we look to find trees with the `elfeed-autotag-tree-id'."
   :group 'elfeed-autotag
   :type '(repeat (file :tag "org-mode file")))
 
-(defcustom pvv-elfeed-autotag-protocol-used nil
-  "Is elfeed-protocol used as source for `elfeed-feeds'."
-  :group 'elfeed-autotag
-  :type 'boolean)
+;; (defcustom elfeed-autotag-protocol-used nil
+;;   "Is elfeed-protocol used as source for `elfeed-feeds'."
+;;   :group 'elfeed-autotag
+;;   :type 'boolean)
 
-(defvar elfeed-autotag-new-entry-hook nil
+(defvar elfeed-autotag-protocol-used t
+  "Is elfeed-protocol used as source for `elfeed-feeds'.")
+
+(defvar elfeed-autotag--new-entry-hook nil
   "List of new-entry tagger hooks created by `elfeed-autotag'.")
 
-(defun pvv-elfeed-autotag-check-configuration-file (file)
+(defun elfeed-autotag--check-configuration-file (file)
   "Make sure FILE exists."
   (when (not (file-exists-p file))
-    (error "Elfeed-autotag cannot open %s.  Make sure it exists or customize the variable \'pvv-elfeed-autotag-files\'"
+    (error "Elfeed-autotag cannot open %s.  Make sure it exists or customize the variable \'elfeed-autotag-files\'"
            (abbreviate-file-name file))))
 
-(defun pvv-elfeed-autotag-is-headline-contained-in-elfeed-tree ()
-  "Is any ancestor a headline with the elfeed tree id.
-Return t if it does or nil if it does not."
-  (let ((result nil))
-    (save-excursion
-      (while (and (not result) (org-up-heading-safe))
-        (setq result (member pvv-elfeed-autotag-tree-id (org-get-tags))))
-    result)))
-
-
-(defun pvv-elfeed-autotag-import-trees (tree-id)
+(defun elfeed-autotag---import-trees (tree-id)
   "Get trees with \":ID:\" property or tag of value TREE-ID.
 Return trees with TREE-ID as the value of the id property or
 with a tag of the same value.  Setting an \":ID:\" property is not
@@ -95,8 +88,7 @@ current users."
       (when (or (member tree-id (org-element-property :tags h))
                 (equal tree-id (org-element-property :ID h))) h))))
 
-
-(defun pvv-elfeed-autotag-convert-tree-to-headlines (parsed-org)
+(defun elfeed-autotag--convert-tree-to-headlines (parsed-org)
   "Get the inherited tags from PARSED-ORG structure if MATCH-FUNC is t.
 The algorithm to gather inherited tags depends on the tree being
 visited depth first by `org-element-map'.  The reason I don't use
@@ -125,36 +117,32 @@ all.  Which in my opinion makes the process more traceable."
           (-concat (list heading)
                    (-first-item tags)))))))
 
-
-(defun pvv-elfeed-autotag-filter-relevant (list)
+(defun elfeed-autotag--filter-relevant (list)
   "Filter relevant entries from the LIST."
   (-filter
    (lambda (entry)
      (and
       (string-match "\\(http\\|entry-title\\|feed-url\\)" (car entry))
-      (not (member (intern pvv-elfeed-autotag-ignore-tag) entry))))
+      (not (member (intern elfeed-autotag-ignore-tag) entry))))
    list))
 
-
-(defun pvv-elfeed-autotag-cleanup-headlines (headlines tree-id)
+(defun elfeed-autotag--cleanup-headlines (headlines tree-id)
   "In all HEADLINES given remove the TREE-ID."
   (mapcar (lambda (e) (delete tree-id e)) headlines))
 
-
-(defun pvv-elfeed-autotag-import-headlines-from-files (files tree-id)
+(defun elfeed-autotag--import-headlines-from-files (files tree-id)
   "Visit all FILES and return the headlines stored under tree tagged TREE-ID or with the \":ID:\" TREE-ID in one list."
   (-distinct (-mapcat (lambda (file)
                         (with-current-buffer (find-file-noselect (expand-file-name file))
                           (org-mode)
-                          (pvv-elfeed-autotag-cleanup-headlines
-                           (pvv-elfeed-autotag-filter-relevant
-                            (pvv-elfeed-autotag-convert-tree-to-headlines
-                             (pvv-elfeed-autotag-import-trees tree-id)))
+                          (elfeed-autotag--cleanup-headlines
+                           (elfeed-autotag--filter-relevant
+                            (elfeed-autotag--convert-tree-to-headlines
+                             (elfeed-autotag--import-trees tree-id)))
                            (intern tree-id))))
                       files)))
 
-
-(defun pvv-elfeed-autotag-convert-headline-to-tagger-params (tagger-headline)
+(defun elfeed-autotag--convert-headline-to-tagger-params (tagger-headline)
   "Add new entry hooks for tagging configured with the found headline in TAGGER-HEADLINE."
   (list
    (or
@@ -164,21 +152,21 @@ all.  Which in my opinion makes the process more traceable."
       (s-trim (s-chop-prefix "feed-url:" (car tagger-headline)))))
    (cdr tagger-headline)))
 
-(defun pvv-elfeed-autotag-export-entry-title-hook (tagger-params)
+(defun elfeed-autotag--export-entry-title-hook (tagger-params)
   "Export TAGGER-PARAMS to the proper `elfeed' structure."
-  (add-hook 'elfeed-autotag-new-entry-hook
+  (add-hook 'elfeed-autotag--new-entry-hook
             (elfeed-make-tagger
              :entry-title (nth 0 tagger-params)
              :add (nth 1 tagger-params))))
 
-(defun pvv-elfeed-autotag-export-feed-url-hook (tagger-params)
+(defun elfeed-autotag--export-feed-url-hook (tagger-params)
   "Export TAGGER-PARAMS to the proper `elfeed' structure."
-  (add-hook 'elfeed-autotag-new-entry-hook
+  (add-hook 'elfeed-autotag--new-entry-hook
             (elfeed-make-tagger
              :feed-url (nth 0 tagger-params)
              :add (nth 1 tagger-params))))
 
-(defun pvv-elfeed-autotag-export-headline-hook (headline)
+(defun elfeed-autotag--export-headline-hook (headline)
   "Export HEADLINE to the proper `elfeed' structure."
   (let* ((feed-url (nth 0 headline))
          (tags-and-title (cdr headline))
@@ -186,38 +174,38 @@ all.  Which in my opinion makes the process more traceable."
                    (-butlast tags-and-title)
                  tags-and-title)))
     ;; TODO raw url sometimes not suitable for this function
-    (add-hook 'elfeed-autotag-new-entry-hook
+    (add-hook 'elfeed-autotag--new-entry-hook
               (elfeed-make-tagger
                :feed-url feed-url
                :add tags))))
 
-(defun pvv-elfeed-autotag-export-titles (headline)
+(defun elfeed-autotag--export-titles (headline)
   "Export HEADLINE to elfeed titles."
   (if (and (stringp (car (last headline)))
            (> (length headline) 1))
       (progn
-        (let* ((feed-id (if pvv-elfeed-autotag-protocol-used
+        (let* ((feed-id (if elfeed-autotag-protocol-used
                             (elfeed-protocol-format-subfeed-id (caar elfeed-feeds) (car headline))
                           (car headline)))
                (feed (elfeed-db-get-feed feed-id)))
           (setf (elfeed-meta feed :title) (car (last headline)))
           (elfeed-meta feed :title)))))
 
-(defun pvv-elfeed-autotag-filter-entry-title-taggers (headlines)
+(defun elfeed-autotag--filter-entry-title-taggers (headlines)
   "Filter tagging rules from the HEADLINES in the tree."
   (-non-nil (-map
              (lambda (headline)
                 (when (s-starts-with? "entry-title" (car headline)) headline))
              headlines)))
 
-(defun pvv-elfeed-autotag-filter-feed-url-taggers (headlines)
+(defun elfeed-autotag--filter-feed-url-taggers (headlines)
   "Filter tagging rules from the HEADLINES in the tree."
   (-non-nil (-map
              (lambda (headline)
                 (when (s-starts-with? "feed-url" (car headline)) headline))
              headlines)))
 
-(defun pvv-elfeed-autotag-filter-subscriptions (headlines)
+(defun elfeed-autotag--filter-subscriptions (headlines)
   "Filter subscriptions to rss feeds from the HEADLINES in the tree."
   (-non-nil (-map
              (lambda (headline)
@@ -231,34 +219,34 @@ all.  Which in my opinion makes the process more traceable."
                        (hyperlink (-concat (list (nth 1 hyperlink)) (cdr headline))))))
              headlines)))
 
-(defun pvv-elfeed-autotag-process (files tree-id)
+(defun elfeed-autotag--run-new-entry-hook (entry)
+  "Run ENTRY through `elfeed-autotag' taggers."
+  (--each elfeed-autotag--new-entry-hook
+    (funcall it entry)))
+
+(defun elfeed-autotag-process (files tree-id)
   "Process headlines and taggers from FILES with org headlines with TREE-ID."
 
   ;; Warn if configuration files are missing
-  (-each files 'pvv-elfeed-autotag-check-configuration-file)
+  (-each files 'elfeed-autotag--check-configuration-file)
 
   ;; Clear elfeed structures
-  (setq elfeed-autotag-new-entry-hook nil)
+  (setq elfeed-autotag--new-entry-hook nil)
 
   ;; Convert org structure to elfeed structure and register taggers
-  (let* ((headlines (pvv-elfeed-autotag-import-headlines-from-files files tree-id))
-         (feeds (pvv-elfeed-autotag-filter-subscriptions headlines))
-         (entry-title-taggers (pvv-elfeed-autotag-filter-entry-title-taggers headlines))
-         (feed-url-taggers (pvv-elfeed-autotag-filter-feed-url-taggers headlines))
-         (entry-title-taggers (-map 'pvv-elfeed-autotag-convert-headline-to-tagger-params entry-title-taggers))
-         (feed-url-taggers (-map 'pvv-elfeed-autotag-convert-headline-to-tagger-params feed-url-taggers)))
-    (-each entry-title-taggers 'pvv-elfeed-autotag-export-entry-title-hook)
-    (-each feed-url-taggers 'pvv-elfeed-autotag-export-feed-url-hook)
-    (-each feeds 'pvv-elfeed-autotag-export-headline-hook)
-    (-each feeds 'pvv-elfeed-autotag-export-titles))
+  (let* ((headlines (elfeed-autotag--import-headlines-from-files files tree-id))
+         (feeds (elfeed-autotag--filter-subscriptions headlines))
+         (entry-title-taggers (elfeed-autotag--filter-entry-title-taggers headlines))
+         (feed-url-taggers (elfeed-autotag--filter-feed-url-taggers headlines))
+         (entry-title-taggers (-map 'elfeed-autotag--convert-headline-to-tagger-params entry-title-taggers))
+         (feed-url-taggers (-map 'elfeed-autotag--convert-headline-to-tagger-params feed-url-taggers)))
+    (-each entry-title-taggers 'elfeed-autotag--export-entry-title-hook)
+    (-each feed-url-taggers 'elfeed-autotag--export-feed-url-hook)
+    (-each feeds 'elfeed-autotag--export-headline-hook)
+    (-each feeds 'elfeed-autotag--export-titles))
 
   (elfeed-log 'info "elfeed-autotag loaded %i rules"
-           (length elfeed-autotag-new-entry-hook)))
-
-(defun elfeed-autotag-run-new-entry-hook (entry)
-  "Run ENTRY through `elfeed-autotag' taggers."
-  (--each elfeed-autotag-new-entry-hook
-    (funcall it entry)))
+           (length elfeed-autotag--new-entry-hook)))
 
 ;;;###autoload
 (defun elfeed-autotag ()
@@ -267,8 +255,8 @@ all.  Which in my opinion makes the process more traceable."
   (elfeed-log 'info "elfeed-autotag initialized")
   (defadvice elfeed (before configure-elfeed activate)
     "Load all feed settings before elfeed is started."
-    (pvv-elfeed-autotag-process pvv-elfeed-autotag-files pvv-elfeed-autotag-tree-id))
-  (add-hook 'elfeed-new-entry-hook #'elfeed-autotag-run-new-entry-hook))
+    (elfeed-autotag-process elfeed-autotag-files elfeed-autotag-tree-id))
+  (add-hook 'elfeed-new-entry-hook #'elfeed-autotag--run-new-entry-hook))
 
 (provide 'elfeed-autotag)
 ;;; elfeed-autotag.el ends here
