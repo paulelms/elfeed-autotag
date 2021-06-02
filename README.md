@@ -1,6 +1,8 @@
 # elfeed-autotag
 
-[![MELPA](http://melpa.org/packages/elfeed-autotag-badge.svg)](http://melpa.org/#/elfeed-autotag) [![MELPA Stable](https://stable.melpa.org/packages/elfeed-autotag-badge.svg)](https://stable.melpa.org/#/elfeed-autotag)
+[![MELPA](http://melpa.org/packages/elfeed-autotag-badge.svg)](http://melpa.org/#/elfeed-autotag)
+[![MELPA Stable](https://stable.melpa.org/packages/elfeed-autotag-badge.svg)](https://stable.melpa.org/#/elfeed-autotag)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/paulelms/elfeed-autotag)
 
 Easy auto-tagging for elfeed-protocol (and elfeed in general).  
 Thanks to [elfeed-org](https://github.com/remyhonig/elfeed-org "elfeed-org") by Remy Honig for starting point.
