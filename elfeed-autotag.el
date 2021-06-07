@@ -75,7 +75,7 @@
     (error "Elfeed-autotag cannot open %s.  Make sure it exists or customize the variable \'elfeed-autotag-files\'"
            (abbreviate-file-name file))))
 
-(defun elfeed-autotag---import-trees (tree-id)
+(defun elfeed-autotag--import-trees (tree-id)
   "Get trees with \":ID:\" property or tag of value TREE-ID.
 Return trees with TREE-ID as the value of the id property or
 with a tag of the same value.  Setting an \":ID:\" property is not
